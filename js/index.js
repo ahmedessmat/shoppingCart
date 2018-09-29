@@ -1,4 +1,3 @@
-//@TODO NOTIFICATIONS
 
 //---------
 // Vue components
@@ -17,7 +16,7 @@ Vue.component('products', {
       }
     });
   },
-
+//products template
   template: "<h1>Products</h1>" + 
 
   "<div class='products'>" +
@@ -69,13 +68,12 @@ Vue.component('products', {
       mousestop: ""
     }
   },
-
+//add cart methods
   methods: {
     addToCart: function(product) {
       var found = false;
-
+      console.log(Number.isInteger(parseFloat(product.price)))
       for (var i = 0; i < vue.cart.length; i++) {
-
         if (vue.cart[i].id === product.id) {
           var newProduct = vue.cart[i];
           newProduct.quantity = newProduct.quantity + 1;
@@ -91,8 +89,9 @@ Vue.component('products', {
         vue.cart.push(product);
       }
 
-      vue.cartSubTotal = vue.cartSubTotal + product.price;
-      vue.cartTotal = vue.cartSubTotal + (vue.tax * vue.cartSubTotal);
+      vue.cartSubTotal = vue.cartSubTotal + parseFloat(product.price);
+      vue.cartTotal = vue.cartSubTotal ;
+      console.log(vue.cartTotal);
       vue.checkoutBool = true;
     },
    
@@ -179,7 +178,7 @@ Vue.component('products', {
     }
   }
 });
-
+//cart template
 Vue.component('cart', {
   template: '<div class="cart">' + 
   '<span class="cart-size" @click="showCart = !showCart"> {{ cart | cartSize }} </span><i class="fa fa-shopping-cart" @click="showCart = !showCart"></i>' +
@@ -207,25 +206,16 @@ Vue.component('cart', {
       showCart: false
     }
   },
-
+//object name display inside
   filters: {
     customPluralize: function(cart) {      
-      var newName;
-
+      let newName;
       if(cart.quantity > 1) {
-        if(cart.product === "Peach") {
-          newName = cart.product + "es";
-        } else if(cart.product === "Puppy") {
-          newName = cart.product + "ies";
-          newName = newName.replace("y", "");
-        } else {
-          newName = cart.product + "s";
-        }
-
+        newName = cart.title + "s";        
         return newName;
       }
 
-      return cart.product;
+      return cart.title;
     },
 
     cartSize: function(cart) {
@@ -242,7 +232,7 @@ Vue.component('cart', {
   methods: {
     removeProduct: function(product) {
       vue.cart.$remove(product);
-      vue.cartSubTotal = vue.cartSubTotal - (product.price * product.quantity);
+      vue.cartSubTotal = vue.cartSubTotal - (parseFloat(product.price) * product.quantity);
       vue.cartTotal = vue.cartSubTotal + (vue.tax * vue.cartSubTotal);
 
       if(vue.cart.length <= 0) {
@@ -284,10 +274,10 @@ Vue.component('cart', {
       }
 
       if(direction === "incriment") {
-        vue.cartSubTotal = vue.cartSubTotal + product.price;
+        vue.cartSubTotal = vue.cartSubTotal + parseFloat(product.price);
 
       } else {
-        vue.cartSubTotal = vue.cartSubTotal - product.price;
+        vue.cartSubTotal = vue.cartSubTotal - parseFloat(product.price);
       }
 
       vue.cartTotal = vue.cartSubTotal + (vue.tax * vue.cartSubTotal);
@@ -380,14 +370,13 @@ Vue.component('checkout-area', {
 
   filters: {
     customPluralize: function(cart) {      
-      var newName;
-
+      let newName;
       if(cart.quantity > 1) {
-        newName = cart.product + "s";
+        newName = cart.title + "s";
         return newName;
       }
 
-      return cart.product;
+      return cart.title;
     },
 
     cartSize: function(cart) {
@@ -404,7 +393,7 @@ Vue.component('checkout-area', {
   methods: {
     removeProduct: function(product) {
       vue.cart.$remove(product);
-      vue.cartSubTotal = vue.cartSubTotal - (product.price * product.quantity);
+      vue.cartSubTotal = vue.cartSubTotal - (parseFloat(product.price) * product.quantity);
       vue.cartTotal = vue.cartSubTotal + (vue.tax * vue.cartSubTotal);
 
       if(vue.cart.length <= 0) {
@@ -458,7 +447,6 @@ var vue = new Vue({
       .then(function (response) {
         vm.productsData = response.data
       })
-  
   }, 
   //intercept the checkout request dispatch
   //send it back down the chain
