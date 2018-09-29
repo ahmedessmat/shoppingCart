@@ -116,8 +116,7 @@ Vue.component('products', {
       var self = this,
           productsLength = vue.productsData.length,
           currentProduct = self.modalData.id,
-          newProductId,
-          newProduct;
+          newProductId;
 
       if(direction === "next") {
         newProductId = currentProduct + 1;
@@ -145,13 +144,13 @@ Vue.component('products', {
 
     hideModal: function() {
       //hide modal and empty modal data
-      var self = this;
+      const self = this;
       self.modalData = {};
       self.showModal = false;
     },
 
     changeImage: function(image) {
-      var self = this;
+      const self = this;
       self.modalData.image = image;
     },
 
@@ -160,7 +159,7 @@ Vue.component('products', {
     },
 
     imageMouseMove: function(event) {
-      var self = this;
+      const self = this;
       
       event.target.style.transform = "scale(2)";
       
@@ -214,17 +213,14 @@ Vue.component('cart', {
         newName = cart.title + "s";        
         return newName;
       }
-
       return cart.title;
     },
 
     cartSize: function(cart) {
-      var cartSize = 0;
-
+      let cartSize = 0;
       for (var i = 0; i < cart.length; i++) {
         cartSize += cart[i].quantity;
       }
-
       return cartSize;
     }
   },
@@ -249,7 +245,6 @@ Vue.component('cart', {
     },
 
     quantityChange: function(product, direction) {
-      var qtyChange;
 
       for (var i = 0; i < vue.cart.length; i++) {
         if (vue.cart[i].id === product.id) {
@@ -375,17 +370,14 @@ Vue.component('checkout-area', {
         newName = cart.title + "s";
         return newName;
       }
-
       return cart.title;
     },
 
     cartSize: function(cart) {
-      var cartSize = 0;
-
+      let cartSize = 0;
       for (var i = 0; i < cart.length; i++) {
         cartSize += cart[i].quantity;
       }
-
       return cartSize;
     }
   },
